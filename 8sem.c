@@ -68,5 +68,4 @@ char* searching(int* n, char* curpath, char* search_name)
             }
             temp = readdir(dir);
         }
-        free(name);
     }
