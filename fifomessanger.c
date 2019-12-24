@@ -11,11 +11,11 @@
 
 void *mythread1(void *names);
 void *mythread2(void *names);
-void chatting(char* nametoread, char* nametowrite, int fd);
+void chatting(char* nametoread, char* nametowrite);
 
 int main(int argc, char** argv)
     {
-    int fd, result;
+    int result;
     size_t size;
     char resstring[14];
     char name01[]="aaaa.fifo";
@@ -25,20 +25,19 @@ int main(int argc, char** argv)
     mknod(name10, S_IFIFO | 0666, 0);
     if (strcmp(argv[1], "0") == 0)
         {
-        chatting(name10, name01, fd);
+        chatting(name10, name01);
         }
     if (strcmp(argv[1], "1") == 0)
         {
-        chatting(name01, name10, fd);
+        chatting(name01, name10);
         }
     return 0;
     }
 
-void chatting(char* nametoread, char* nametowrite, int fd){
-    pthread_t thid, mythid, secthid, secthidid;
-    int result, secresult;
-    result = pthread_create( &thid, (pthread_attr_t *)NULL, mythread1, nametoread);
-    secresult = pthread_create( &secthid, (pthread_attr_t *)NULL, mythread2, nametowrite);
+void chatting(char* nametoread, char* nametowrite){
+    pthread_t thid, secthid;
+    pthread_create( &thid, (pthread_attr_t *)NULL, mythread1, nametoread);
+    pthread_create( &secthid, (pthread_attr_t *)NULL, mythread2, nametowrite);
     pthread_join(thid, (void **)NULL);
     pthread_join(secthid, (void**)NULL);
 }
